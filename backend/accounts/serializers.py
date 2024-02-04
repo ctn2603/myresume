@@ -2,9 +2,8 @@
 from typing import Any, Union
 
 # Third-party imports
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import authenticate
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 
 # Internal imports
 from accounts.models import User
@@ -62,9 +61,8 @@ class UserLoginSerializer(serializers.ModelSerializer):
         """
         email: str = attrs.get('email')
         password: str = attrs.get('password')
-        user: User = User.objects.filter(email=email).first()
-        # TODO: process token later for sign in
-        token, _ = Token.objects.get_or_create(user=user)
-        if user and check_password(password=password, encoded=user.password):
+        user: User = authenticate(username=email, password=password)
+        if user:
+            attrs['user'] = user
             return attrs
         raise serializers.ValidationError("Invalid user credentials.")

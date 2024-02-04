@@ -31,7 +31,6 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
-        print("ADMIN.py, SET PASSWORD", self.cleaned_data["password1"])
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
@@ -79,7 +78,7 @@ class UserAdmin(BaseUserAdmin):
         "groups",
         "user_permissions",
     ]
-    readonly_fields = ['email']
+    # readonly_fields = ['email']
 
 # Register your models here.
 admin.site.register(User, UserAdmin)

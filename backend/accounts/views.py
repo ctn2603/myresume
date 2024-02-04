@@ -5,7 +5,8 @@ from typing import Any
 from rest_framework import generics
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST 
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST , HTTP_401_UNAUTHORIZED
+from django.contrib.auth import authenticate, login, logout
 
 # Internal imports
 from accounts.models import User
@@ -23,5 +24,12 @@ class LoginView(generics.GenericAPIView):
     def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
+            login(request, serializer.validated_data['user'])
             return Response(serializer.data, status=HTTP_200_OK)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=HTTP_401_UNAUTHORIZED)
+
+class LogoutView(generics.GenericAPIView):
+    def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        logout()
+        return Response({'message': 'Logged out successfully'}, status=HTTP_200_OK)

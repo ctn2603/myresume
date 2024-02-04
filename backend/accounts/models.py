@@ -86,3 +86,10 @@ class User(AbstractUser):
     
     def has_module_perms(self, app_label: str) -> bool:
         return True
+
+    def __str__(self) -> str:
+        return (f'Username: {self.username}, ' 
+                f'Email: {self.email}, ' 
+                f'First name: {self.first_name}, ' 
+                f'Last name: {self.last_name}, '
+                f'Phone: {self.phone}')
