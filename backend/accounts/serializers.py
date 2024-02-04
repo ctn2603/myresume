@@ -2,34 +2,37 @@
 from typing import Any, Union
 
 # Third-party imports
-from django.db.models.query import QuerySet
-from rest_framework.serializers import ModelSerializer, CharField, EmailField, ValidationError
+from django.contrib.auth.hashers import make_password, check_password
+from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 # Internal imports
 from accounts.models import User
 from .constants import PASSWORD_MIN_LENGTH
 
-class UserRegSerializer(ModelSerializer):
+class UserRegSerializer(serializers.ModelSerializer):
     """
     Serializer for user registration
     """
-    email = CharField(required=True)
-    password = CharField(required=True)
-    username = CharField(required=True)
-    first_name = CharField(required=True)
-    last_name = CharField(required=True)
+    email = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
+    username = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'username', 'first_name', 'last_name']
-        # fields = ['username', 'email', 'password', 'first_name', 'last_name', 'is_staff', 'is_superuser']
+        fields = ['username', 'email', 'password', 'first_name', 'last_name']
+
+    def create(self, validated_data: Any) -> Any:
+        return User.objects.create_user(**validated_data)
 
     def validate_email(self, value: str) -> str:
         """
         Validate that email exist and match the existing record
         """
         if User.objects.filter(email=value).exists():
-            raise ValidationError("Email already exists")
+            raise serializers.ValidationError("Email already exists")
         return value
 
     def validate_password(self, value: str) -> str:
@@ -38,15 +41,15 @@ class UserRegSerializer(ModelSerializer):
         should be at least a certain length
         """
         if len(value) < PASSWORD_MIN_LENGTH:
-            raise ValidationError(f"Password length must be at least {PASSWORD_MIN_LENGTH} characters")
+            raise serializers.ValidationError(f"Password length must be at least {PASSWORD_MIN_LENGTH} characters")
         return value
 
-class UserLoginSerializer(ModelSerializer):
+class UserLoginSerializer(serializers.ModelSerializer):
     """
     Serializer for user login
     """
-    email = EmailField(required=True, allow_blank=False)
-    password = CharField(required=True, allow_blank=False)
+    email = serializers.EmailField(required=True, allow_blank=False)
+    password = serializers.CharField(required=True, allow_blank=False)
 
     class Meta:
         model = User
@@ -59,10 +62,9 @@ class UserLoginSerializer(ModelSerializer):
         """
         email: str = attrs.get('email')
         password: str = attrs.get('password')
-        users: QuerySet = User.objects.filter(email=email, password=password)
-
-        if users.exists() and users.count() == 1:
-            user = users.first()
-        else:
-            raise ValidationError("Invalid user credentials.")
-        return user
+        user: User = User.objects.filter(email=email).first()
+        # TODO: process token later for sign in
+        token, _ = Token.objects.get_or_create(user=user)
+        if user and check_password(password=password, encoded=user.password):
+            return attrs
+        raise serializers.ValidationError("Invalid user credentials.")
