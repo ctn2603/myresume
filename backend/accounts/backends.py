@@ -9,6 +9,12 @@ from rest_framework.request import Request
 from .models import User
 
 class EmailBackend(ModelBackend):
+    """
+    Backend Authentication Docs:
+    https://docs.djangoproject.com/en/5.0/topics/auth/customizing/
+    https://docs.djangoproject.com/en/5.0/topics/auth/customizing/#authentication-backends
+    """
+
     def authenticate(self, request: Request, username:str=None, password:str=None) -> User:
         UserModel = get_user_model()
         try:

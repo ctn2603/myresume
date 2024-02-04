@@ -61,6 +61,7 @@ class User(AbstractUser):
             # TODO: define what the user can do with this User model
             # For example: staff can mark the user as fake account or so, and do not need the admin to do so
             # Link: https://docs.djangoproject.com/en/5.0/topics/auth/customizing/#extending-user
+            ("can_do_something", "Can do something custom"),
         ]
 
     # Admin and superuser are different roles in this project (preference)
@@ -81,8 +82,13 @@ class User(AbstractUser):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['username'] # Shouldn't include 'password' here as it'll show the password characters when typing
 
-    def has_perm(self, perm: str, obj=...) -> bool:
-        return True
+    def has_perm(self, perm: str, obj=None) -> bool:
+        if self.is_superuser:
+            return True
+        else:
+            if perm in self.get_all_permissions():
+                return True
+            return False
     
     def has_module_perms(self, app_label: str) -> bool:
         return True

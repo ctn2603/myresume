@@ -2,16 +2,19 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
+from django.http.request import HttpRequest
 
 # Internal imports
 from .models import User
 
 class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
+    """
+    A form for creating new users. Includes all the required
+    fields, plus a repeated password.
+    Document: https://docs.djangoproject.com/en/5.0/topics/forms/modelforms/
+    """
 
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
@@ -49,6 +52,11 @@ class UserChangeForm(forms.ModelForm):
         fields = ["username", "email", "password", "is_staff", "is_admin"]
 
 class UserAdmin(BaseUserAdmin):
+    """
+    Permission links: 
+    https://docs.djangoproject.com/en/5.0/topics/auth/default/#how-to-log-a-user-in
+    https://docs.djangoproject.com/en/5.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin
+    """
 
     # The forms to add and change user instances
     form = UserChangeForm
@@ -79,6 +87,19 @@ class UserAdmin(BaseUserAdmin):
         "user_permissions",
     ]
     # readonly_fields = ['email']
+
+    def has_add_permission(self, request: HttpRequest) -> bool:
+        return request.user.has_perm('accounts.add_user')
+    
+    def has_delete_permission(self, request: HttpRequest, obj=...) -> bool:
+        return request.user.has_perm('accounts.delete_user')
+    
+    def has_change_permission(self, request: HttpRequest, obj=...) -> bool:
+        return request.user.has_perm('accounts.change_user')
+    
+    def has_view_permission(self, request: HttpRequest, obj=...) -> bool:
+        return request.user.has_perm('accounts.view_user')
+
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
