@@ -1,0 +1,30 @@
+# Specify the build specification syntax for build spec
+version: 0.2
+
+phases:
+  install:
+      runtime-versions:
+        nodejs: 20.x
+      commands:
+      - npm install -g yarn
+
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - yarn install
+
+  build:
+    commands:
+      - echo "Building React app..."
+      - yarn run build
+
+  post_build:
+    commands:
+      - echo "Clean up S3 files"
+      # Remove existing files in s3 bucket
+      - aws s3 rm s3://chitamnguyen.net --recursive
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'build'

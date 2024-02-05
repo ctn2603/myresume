@@ -1,0 +1,12 @@
+services:
+  app:
+    # specify the location of docker file
+    build: .
+    ports:
+      # map container port to host port
+      - 3000:3000
+    volumes:
+      # excluding the node_modules directory in container from being overwritten by the host directory
+      - /usr/src/app/node_modules
+      # map all things in host to container
+      - .:/usr/src/app

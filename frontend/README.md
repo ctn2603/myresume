@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+<div align="center">
+  <h3 align="center">Personal Website</h3>
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📋 <a name="table">Table of Contents</a>
 
-## Available Scripts
+1. 🔮 [Introduction](#introduction)
+2. ⚙️ [Tech Stack](#tech-stack)
+3. 🔬 [Quick Start](#quick-start)
+4. 🔗 [Links](#links)
 
-In the project directory, you can run:
+## <a name="introduction">🔮 Introduction</a>
+This repository contains the source code and necessary configurations for my <a href="https://chitamnguyen.net" target="_blank">personal website</a>, a central hub showcasing my Computer Science-related skills, experiences, projects, and leadership experience.
 
-### `npm start`
+## <a name="tech-stack">⚙️ Tech Stack</a>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React.js
+- Typescript
+- Tailwind CSS
+- Framer motion
+- Email JS
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## <a name="quick-start">🔬 Quick Start</a>
 
-### `npm test`
+Follow these steps to set up the project locally on your machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Core Prerequisites**
 
-### `npm run build`
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Prerequisites for Development in Container** 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [Dev Containers Extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Prerequisites for Development in Host** 
 
-### `npm run eject`
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Development in Container
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Running the Project**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Enter the project directory, type:
+```bash
+compose docker up
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**View the website**
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Live coding**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Select [Attach to Running Container](https://code.visualstudio.com/docs/devcontainers/attach-container) in Visual Studio Code to start live coding in the container.
 
-### Code Splitting
+### Development in host
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Cloning the Repository**
 
-### Analyzing the Bundle Size
+```bash
+git clone https://github.com/ctn2603/personal-website.git
+cd personal-website
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Install dependencies**
 
-### Making a Progressive Web App
+```bash
+yarn install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**Coding**
+```bash
+yarn run dev
+```
 
-### Advanced Configuration
+**View the website**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
 
-### Deployment
+## <a name="links">🔗 Links</a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Models and Assets used in the project can be found on [lottiefiles](https://lottiefiles.com), [freepik](https://www.freepik.com/), and [flaticon](https://www.flaticon.com/) websites
